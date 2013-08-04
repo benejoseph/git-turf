@@ -2,6 +2,8 @@
 import subprocess
 import json
 from gitparse import parsegitlog
+from operator import methodcaller
+
 g_gitdir = '/home/bjoseph/sideproject/git-turf'
 
 def getGitLogs():
@@ -11,9 +13,17 @@ def getGitLogs():
            
 
 class StatusObj():
-    def __init__(self,callback):
+    def __init__(self,callback,query=None):
         
         logs = getGitLogs()
+
+        if query is not None:
+            try:
+                logs = sorted(logs, key=methodcaller('get',query, None))
+            except Exception:
+                print "bad query key"
+
+            
 
         self.text = json.dumps(logs)
         

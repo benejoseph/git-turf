@@ -29,8 +29,14 @@ g_threadpool = ThreadPool(executfunc,4)
 class StatusHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
-        self.set_header('Content-Type', 'application/json') 
-        g_threadpool.put(StatusObj(self.callback))
+        self.set_header('Content-Type', 'application/json')
+        query = None
+        try:
+            query = self.get_argument('query', True)
+        except Exception:
+            print "query not present"
+                
+        g_threadpool.put(StatusObj(self.callback,query))
 	        
     def callback(self,workobj):
         self.finish(workobj.gettext()) 
@@ -40,8 +46,8 @@ class StatusHandler(tornado.web.RequestHandler):
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/status", StatusHandler),
-            (r"/(.*)",tornado.web.StaticFileHandler,{'path' : './'})
+            (r"/service/status", StatusHandler),
+            (r"/(.*)",tornado.web.StaticFileHandler,{'path' : './client'})
         ]
 
         settings = dict(
