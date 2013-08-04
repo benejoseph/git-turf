@@ -40,7 +40,7 @@ def parserecord(log):
     return data
 
 
-def parsegitlog(log):
+def parsegitlog(txt):
     regexheader = 'commit[\s]+[a-f0-9]{20,}\nAuthor.*\nDate.*\n'
 
     iter = re.finditer(regexheader,txt)
@@ -54,6 +54,7 @@ def parsegitlog(log):
     data = []
     for record in records:
         data.append(parserecord(record))
+
 
     return data
 

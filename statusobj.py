@@ -1,14 +1,15 @@
 #!/usr/bin/python
 import subprocess
 import json
+from gitparse import parsegitlog
 g_gitdir = '/home/bjoseph/git-turf'
 
-g_pretty_format = '--pretty=format:\"},%n {\"commit\": \"%H\",%n  \"author\": \"%an \",%n  \"date\": \"%ad\",%n  \"message\": \"%s\"%n \"files\":\"'
-
 def getGitLogs():
-    output = subprocess.check_output(['git','log','--name-status','--since=1.days'],cwd=g_gitdir)
+    output = subprocess.check_output(['git','log','--name-status','--since=2.weeks'],cwd=g_gitdir)
+
+    records = parsegitlog(str(output))
    
-    return str(output)
+    return str(records)
 
 class StatusObj():
     def __init__(self,callback):

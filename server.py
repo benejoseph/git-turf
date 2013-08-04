@@ -11,6 +11,7 @@ from statusobj import StatusObj
 import signal
 import sys
 
+define("port", default=8887, help="run on the given port", type=int)
 
 #ctrl-c!
 def signal_handler(signal, frame):
