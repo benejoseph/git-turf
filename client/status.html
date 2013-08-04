@@ -1,0 +1,61 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TRY THIS OUT</title>
+  <!---<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"> </link>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+-->
+  <script src="jquery.js"></script>
+
+  <script>
+  function serverError(xhr,textstatus,errthrown) {
+    console.log(errthrown);
+  }
+
+  function serverSearchHandler(data,textdata) {
+   <!-- alert('SUCCESS') -->
+  } 
+
+  $(document).ready( function() {
+      
+      <!--button handler -->
+      $('#mybutton').click( function() {
+        $('#items').append("<div id=\"singleitem\"> test </div>");        
+
+      });
+
+      <!--single item handler -->
+      $('div#items').on('click','#singleitem', function() {
+        var text = $(this).text();
+        alert(text);
+      });
+
+      <!--text box entry handler-->
+      $('#searchbox').on('input',function() {
+         var text = $(this).val()
+         if (text.length >= 3) {
+           var data = {"action" : "search", "query" : text};
+
+           $.ajax({url : "/search",search : "json",success : serverSearchHandler,error : serverError});
+ 
+         }
+      });
+  });
+
+  </script>
+</head>
+<body>
+
+<div>
+<table>
+<tr><td>Author </td> <td>Files</td></tr>
+<tr><td><div id="author"> </div>  </td> <td><div id="files"> </div></td></tr>
+</table>
+</div>
+ 
+ 
+</body>
+</html>
