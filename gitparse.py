@@ -25,14 +25,20 @@ def parserecord(log):
     lines = comments.split('\n')
     mycomment = ''
     mymods = []
-    isfirst = True
     for line in lines:
+        line = line.strip()
         if line is not '':
-            if isfirst:
-                mycomment = line.strip()
-                isfirst = False
+            words = line.split('\t')
+            if len(words) == 1:
+                mycomment += line + '\n'
             else:
-                mymods.append(line)         
+                if len(words) > 1 and len(words[0]) == 1:
+                    if words[0] == 'A' or words[0] == 'D' or words[0] == 'M':
+                        mymods.append({'mod' : words[0] , 'file' : words[1]})
+                    else:
+                        mycomment += line + '\n'
+
+       
             
 
     data = {'hash' : myhash, 'author' : myauthor, 'date' : mydate, 'comment' : mycomment, 'mods' : mymods}
