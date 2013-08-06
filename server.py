@@ -10,8 +10,10 @@ from threadpool import ThreadPool
 from statusobj import StatusObj
 import signal
 import sys
+import config
 
 define("port", default=8887, help="run on the given port", type=int)
+config_file_name = "config.cfg"
 
 #ctrl-c!
 def signal_handler(signal, frame):
@@ -61,6 +63,9 @@ def main():
 
     signal.signal(signal.SIGINT, signal_handler)
 
+    #set up global config stuff
+    config.init(config_file_name)
+    
     g_threadpool.start()
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(Application())

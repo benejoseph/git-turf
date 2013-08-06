@@ -3,19 +3,19 @@ import subprocess
 import json
 from gitparse import parsegitlog
 from operator import methodcaller
+import config
 
-g_gitdir = '/home/bjoseph/sideproject/git-turf'
-
-def getGitLogs():
-    output = subprocess.check_output(['git','log','--name-status','--since=2.weeks'],cwd=g_gitdir)
+def getGitLogs(mydir):
+    output = subprocess.check_output(['git','log','--name-status','--since=2.weeks'],cwd=mydir)
 
     return parsegitlog(str(output))
            
 
 class StatusObj():
     def __init__(self,callback,query=None):
-        
-        logs = getGitLogs()
+        print config.get()
+        mydir = config.get().getGitDirectory()
+        logs = getGitLogs(mydir)
 
         if query is not None:
             try:
