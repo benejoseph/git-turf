@@ -13,6 +13,7 @@ def get():
 
 server = 'server'
 gitdir = 'git_directory'
+dbfile = 'database_file'
 
 class Config():
     def __init__(self,filename):
@@ -27,6 +28,7 @@ class Config():
 
             config.add_section('server')
             config.set(server,gitdir,'/opt/my_repo')
+            config.set(server,dbfile,'database.dat')
 
             with open(filename, 'wb') as configfile:
                 config.write(configfile)
@@ -35,3 +37,6 @@ class Config():
 
     def getGitDirectory(self):
         return self.config.get(server,gitdir)
+
+    def getDatabaseFilename(self):
+        return self.config.get(server,dbfile)

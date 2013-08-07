@@ -11,6 +11,7 @@ from statusobj import StatusObj
 import signal
 import sys
 import config
+import stupidDB
 
 define("port", default=8887, help="run on the given port", type=int)
 config_file_name = "config.cfg"
@@ -43,12 +44,18 @@ class StatusHandler(tornado.web.RequestHandler):
     def callback(self,workobj):
         self.finish(workobj.gettext()) 
 
- 
+class LoginHandler(tornado.web.RequestHandler):
+    def post(self):
+        user = self.get_argument("user")
+        password = self.get_argument("password")
+        print user,password
+        return self.write("hello") 
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/service/status", StatusHandler),
+            (r"/service/login", LoginHandler),
             (r"/(.*)",tornado.web.StaticFileHandler,{'path' : './client'})
         ]
 
@@ -65,6 +72,9 @@ def main():
 
     #set up global config stuff
     config.init(config_file_name)
+
+    #set up the "database"
+    stupidDB.init(config.getDatabaseFilename())
     
     g_threadpool.start()
     tornado.options.parse_command_line()
